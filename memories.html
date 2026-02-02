@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OUR MEMORIES 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* GENERAL STYLING */
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      border-radius: 0 0 40px 40px;
+      overflow: hidden;
+      background: linear-gradient(to bottom right, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('IMG_5463.jpeg') center/cover no-repeat;
+      color: rgb(0, 179, 255);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 30px;
+      color: #0088e9;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+      opacity: 0.95;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+      animation: fadeIn 2s ease forwards;
+    }
+
+    header .highlight { font-weight: 800; color: #012452; }
+
+    @keyframes fadeIn { 0% { opacity:0; transform:translateY(20px);}
+     100% {opacity:1; transform:translateY(0);} }
+
+    /* GALLERY */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-auto-rows: 200px;
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      cursor: pointer;
+    }
+
+    .card img,
+    .card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover img,
+    .card:hover video { transform: scale(1.1) rotate(1deg); }
+    .card:hover { box-shadow: 0 25px 50px rgba(0,0,0,0.8); transform: scale(1.05); }
+
+    .card.small { grid-row: span 1; }
+    .card.medium { grid-row: span 2; }
+    .card.large { grid-row: span 3; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .lightbox-content img,
+    .lightbox-content video {
+      width: 100%;
+      height: auto;
+      max-height: 90vh;
+      border-radius: 15px;
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: #004169;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 1.2rem;
+      color: #003b6e;
+    }
+
+    /* MUSIC BUTTON + ANIMATED HEART */
+    #musicControl {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: #00bfff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      position: fixed;
+    }
+
+    #musicControl:hover { transform: scale(1.2); }
+
+    #musicControl.playing {
+      animation: heartbeat 1s infinite;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.2); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* VOLUME SLIDER */
+    #volumeControl {
+      position: fixed;
+      bottom: 100px;
+      left: 30px;
+      width: 120px;
+      display: none;
+      z-index: 1000;
+    }
+
+    #volumeControl input[type="range"] {
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND MUSIC -->
+  <audio id="bgMusic" src="gyakie faraway.mp3" autoplay loop></audio>
+
+  <!-- MUSIC CONTROL BUTTON -->
+  <button id="musicControl" class="playing">🎵</button>
+
+  <!-- VOLUME CONTROL -->
+  <div id="volumeControl">
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <h1>🩵 OUR MOMENTS 🩵</h1>
+    <p>ON THIS VALENTINE’S DAY, I FIND MYSELF SMILING AT OUR
+         <span class="highlight">GOOD MEMORIES</span>—THE 
+         LAUGHTER THAT CAME SO EASILY, THE MOMENTS THAT 
+         FELT WARM AND SAFE, THE TIMES WHEN JUST BEING 
+         TOGETHER FELT LIKE ENOUGH. THOSE MEMORIES STILL
+          SHINE IN MY HEART, GENTLE AND BEAUTIFUL, LIKE QUIET
+           MUSIC I NEVER WANT TO FORGET. 🩵</p>
+    <p>AND THEN THERE ARE THE SAD ONES—THE MOMENTS THAT TAUGHT
+         US HOW FRAGILE LOVE CAN BE, HOW SILENCE CAN BE LOUD,
+          HOW HEARTS CAN HURT EVEN WHEN THEY CARE DEEPLY. THEY 
+          STILL ACHE SOMETIMES, BUT EVEN IN THE SADNESS, I’M 
+          GRATEFUL… BECAUSE THEY CAME FROM SOMETHING REAL, 
+          SOMETHING THAT MATTERED. 🩵</p>
+    <p>EVERY MEMORY, HAPPY OR PAINFUL, CARRIES A PIECE OF YOU 
+        WITH IT. AND TODAY, I CHOOSE TO HONOR THEM ALL—WITH LOVE,
+         WITH GRATITUDE, AND WITH A HEART THAT STILL WISHES YOU WELL. 🩵</p>
+    <p><span class="highlight">🩵 EVERY SMILE 🩵. 🩵 EVERY MEMORY. 
+        🩵 EVERY HEARTBEAT. 🩵</span></p>
+  </header>
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <div class="card medium"><video src="VIDEO.MP4"></video></div>
+    <div class="card medium"><img src="IMG_5462.jpeg" alt="Memory 1"></div>
+    <div class="card medium"><video src="vid.MP4"></video></div>
+    <div class="card small"><img src="IMG_2685.JPG" alt="Memory 2"></div>
+    <div class="card medium"><video src="VIDEO4.MP4"></video></div>
+    <div class="card small"><img src="IMG_2675.JPG" alt="Memory 3"></div>
+    <div class="card medium"><video src="vid7.MP4"></video></div>
+    <div class="card small"><video src="vid6.MP4"></video></div>
+    <div class="card small"><video src="VIDEO3.MP4"></video></div>
+    <div class="card medium"><video src="VIDEOS2.MP4"></video></div>
+    <div class="card small"><img src="IMG_2680.JPG" alt="Memory 4"></div>
+    <div class="card small"><img src="IMG_9447.JPG" alt="Memory 5"></div>
+    <div class="card small"><video src="vid9.MP4"></video></div>
+    <div class="card small"><video src="vid8.MP4"></video></div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="closeBtn">&times;</span>
+    <div class="lightbox-content" id="lightboxContent"></div>
+  </div>
+
+  <footer>🩵FOREVER STARTS HERE 🩵
+    <P>🩵 HAPPY VALENTINE MY SLOTH 🩵</P>
+  </footer>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const closeBtn = document.getElementById('closeBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicControl');
+    const volumeDiv = document.getElementById('volumeControl');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    let musicPlaying = true;
+    bgMusic.volume = 0.5;
+
+    // MUSIC BUTTON CLICK
+    musicBtn.addEventListener('click', () => {
+      if(musicPlaying){
+        fadeAudio(bgMusic, bgMusic.volume, 0, 500);
+        musicBtn.classList.remove('playing');
+        musicPlaying = false;
+      } else {
+        fadeAudio(bgMusic, 0, volumeSlider.value, 500);
+        musicBtn.classList.add('playing');
+        musicPlaying = true;
+      }
+      volumeDiv.style.display = volumeDiv.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // VOLUME CONTROL
+    volumeSlider.addEventListener('input', () => {
+      bgMusic.volume = volumeSlider.value;
+    });
+
+    // LIGHTBOX FUNCTIONALITY
+    document.querySelectorAll('.card img, .card video').forEach(item => {
+      item.addEventListener('click', () => {
+        lightbox.classList.add('active');
+        if(item.tagName === 'IMG') {
+          lightboxContent.innerHTML = `<img src="${item.src}" alt="">`;
+          if(!musicPlaying) fadeAudio(bgMusic, 0, volumeSlider.value, 500);
+          musicBtn.classList.add('playing');
+          musicPlaying = true;
+        } else if(item.tagName === 'VIDEO') {
+          lightboxContent.innerHTML = `<video src="${item.src}" controls autoplay></video>`;
+          fadeAudio(bgMusic, bgMusic.volume, 0, 500);
+          musicBtn.classList.remove('playing');
+          musicPlaying = false;
+        }
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      lightboxContent.innerHTML = '';
+      if(!musicPlaying){
+        fadeAudio(bgMusic, 0, volumeSlider.value, 500);
+        musicBtn.classList.add('playing');
+        musicPlaying = true;
+      }
+    }
+
+    // SMOOTH FADE FUNCTION
+    function fadeAudio(audio, from, to, duration){
+      let stepTime = 50;
+      let steps = duration / stepTime;
+      let step = (to - from)/steps;
+      let current = from;
+      audio.volume = from;
+      if(to>0 && audio.paused) audio.play();
+      let fade = setInterval(()=>{
+        current += step;
+        if((step>0 && current>=to)||(step<0 && current<=to)){
+          current = to;
+          clearInterval(fade);
+          if(to===0) audio.pause();
+        }
+        audio.volume = Math.min(Math.max(current,0),1);
+      }, stepTime);
+    }
+  </script>
+</body>
+</html>

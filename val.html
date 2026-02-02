@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VALENTINE 🩵</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+  height:100vh;
+  background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url("IMG_5463.jpeg") center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:white;
+  perspective:1200px;
+}
+
+.container{text-align:center;z-index:2}
+
+h2{
+  font-size:1.4rem;
+  color:#7dd3fc;
+  margin-bottom:15px;
+  min-height:32px;
+}
+
+h1{
+  font-size:4rem;
+  font-weight:900;
+  letter-spacing:4px;
+  color:#e0f2fe;
+  text-shadow:0 0 35px rgba(125,211,252,1);
+  animation:glow 2s infinite alternate;
+}
+
+.buttons{
+  margin-top:45px;
+  display:flex;
+  gap:35px;
+  justify-content:center;
+}
+
+button{
+  padding:16px 45px;
+  font-size:1.1rem;
+  font-weight:800;
+  border-radius:50px;
+  border:none;
+  cursor:pointer;
+  transition:.3s;
+}
+
+#yes{
+  background:#7dd3fc;
+  color:#003049;
+  box-shadow:0 20px 50px rgba(125,211,252,.8);
+}
+#yes:hover{transform:scale(1.15)}
+
+#no{
+  background:transparent;
+  border:2px solid #7dd3fc;
+  color:#7dd3fc;
+  position:relative;
+}
+
+/* FLOATING 3D HEARTS */
+.heart{
+  position:absolute;
+  bottom:-80px;
+  font-size:90px;
+  color:#7dd3fc;
+  opacity:.85;
+  animation:floatHeart linear infinite;
+  filter:
+    drop-shadow(0 0 20px rgba(125,211,252,.9))
+    drop-shadow(0 0 60px rgba(125,211,252,.7));
+  pointer-events:none;
+}
+
+@keyframes floatHeart{
+  0%{transform:translateY(0) scale(1) rotateX(0) rotateY(0)}
+  50%{transform:translateY(-60vh) scale(1.4) rotateX(180deg) rotateY(180deg)}
+  100%{transform:translateY(-120vh) scale(1.8) rotateX(360deg) rotateY(360deg);opacity:0}
+}
+
+@keyframes glow{
+  from{text-shadow:0 0 20px rgba(125,211,252,.6)}
+  to{text-shadow:0 0 50px rgba(125,211,252,1)}
+}
+
+@media(max-width:600px){
+  h1{font-size:2.6rem}
+  .buttons{flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔊 BACKGROUND MUSIC (NO CONTROLS) -->
+<audio id="music" src="lasmidbadboy.mp3" loop></audio>
+
+<div class="container">
+  <h2 id="typeText"></h2>
+  <h1>WILL YOU BE MY VALENTINE</h1>
+
+  <div class="buttons">
+    <button id="yes" onclick="goYes()">YES 🩵</button>
+    <button id="no" onmouseover="runAway()">NO</button>
+  </div>
+</div>
+
+<script>
+/* TYPEWRITER */
+const text="HEY 🩵 MY SLOTH 🩵  ";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("typeText").innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(type,100);
+  }
+}
+window.onload=type;
+
+/* MUSIC AUTOPLAY */
+window.addEventListener('load', () => {
+  const music = document.getElementById("music");
+  
+  // Try to autoplay
+  music.play().catch(() => {
+    // Browser blocked autoplay, play on first click
+    document.body.addEventListener('click', () => music.play(), {once:true});
+  });
+});
+
+/* BUTTONS */
+function goYes(){window.location.href="memories.html";}
+function runAway(){
+  const b=document.getElementById("no");
+  b.style.left=Math.random()*300-150+"px";
+  b.style.top=Math.random()*200-100+"px";
+}
+
+/* HEARTS */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="🩵";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(Math.random()*4+7)+"s";
+  h.style.fontSize=(70+Math.random()*60)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+},550);
+</script>
+
+</body>
+</html>
